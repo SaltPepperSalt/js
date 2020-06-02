@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="">
+  <style>
+    .start::after {
+      content: "\25B7";
+    }
+
+    .stop::after {
+      content: "\2225"
+    }
+  </style>
+</head>
+
+<body>
+  <h1 id="time"></h1>
+  <button class="start"></button>
+  <script>
+    const $button = document.querySelector('button');
+    const $time = document.getElementById('time');
+    let seconds = 10;
+    let stop = 0;
+    $time.textContent = `${Math.floor(seconds / 60)}:${(seconds % 60) < 10 ? '0' + (seconds % 60) : (seconds % 60)}`;
+    $button.onclick = e => {
+      if (e.target.matches('.stop')) {
+        e.target.classList.replace('stop', 'start');
+        clearInterval(stop);
+      } else if (e.target.matches('.start')) {
+        e.target.classList.replace('start', 'stop');
+        stop = setInterval(() => {
+          seconds--;
+          if (seconds === 0) {
+            clearInterval(stop);
+            seconds = 10;
+            e.target.classList.replace('stop', 'start');
+          }
+          $time.textContent = `${Math.floor((seconds / 60))}:${(seconds % 60) < 10 ? '0' + (seconds % 60) : (seconds % 60)}`;
+        }, 1000);
+      }
+    };
+  </script>
+</body>
+
+</html>

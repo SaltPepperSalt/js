@@ -1,18 +1,5 @@
-function insertionSort(array) {
-  const { length } = array;
-  for (let j = 0; j < length - 1; j++) {
-    for (let i = j + 1; i >= 0; i--) {
-      if (array[i - 1] > array[i]) {
-        let change = 0;
-        change = array[i - 1];
-        array[i - 1] = array[i];
-        array[i] = change;
-      }
-    }
-  }
-  return array;
-}
-
-console.log(insertionSort([3, 1, 0, -1, 4, 2])); // [-1, 0, 1, 2, 3, 4]
-console.log(insertionSort([2, 4, 5, 1, 3])); // [1, 2, 3, 4, 5]
-console.log(insertionSort([5, 2, 1, 3, 4, 6])); // [1, 2, 3, 4, 5, 6]
+// Q2) words 배열의 각 요소(문자열)를 역순으로 가지는 새로운 배열(newWords)을 만들어주세요.
+const words = ['hello', 'world', 'nice', 'to', 'meet', 'you'];
+const newWords = words.map(word => [...word].reverse().join(''));
+console.log('Q2');
+console.log(newWords); // [ 'olleh', 'dlrow', 'ecin', 'ot', 'teem', 'uoy' ]

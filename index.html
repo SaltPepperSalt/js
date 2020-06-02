@@ -1,9 +1,92 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    input[type="checkbox"]:checked+span {
+      text-decoration-line: line-through;
+    }
+
+    ul {
+      padding-left: 0px;
+    }
+
+    .todos li {
+      width: 150px;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
 <body>
-    <script>
-        var x = 1;
-        console.log(x);
-    </script>    
+  <input class="todo-input" type="text" placeholder="enter todo!">
+  <ul class="todos">
+
+  </ul>
+  <script>
+    const $todoInput = document.querySelector('.todo-input');
+    const $todos = document.querySelector('.todos');
+
+    let todos = [
+      { id: 3, content: 'JavaScript', completed: false },
+      { id: 2, content: 'CSS', completed: true },
+      { id: 1, content: 'HTML', completed: false }
+    ];
+
+    function render() {
+      $todos.textContent = '';
+      // eslint-disable-next-line no-return-assign
+      todos.forEach(todo => $todos.innerHTML += `<li id=${todo.id}>
+        <input type="checkbox" ${todo.completed ? ' checked' : ''}>
+        <span>${todo.content}</span>
+        <button>X</button>  
+      </li>`);
+    }
+    
+    render();
+    $todoInput.onkeyup = e => {
+      if (e.keyCode !== 13 || !$todoInput.value.trim()) return;
+      const insertTodo = {};
+      insertTodo.id = Math.max(...todos.map(todo => todo.id)) + 1;
+      insertTodo.content = $todoInput.value;
+      insertTodo.completed = false;
+      todos = [insertTodo, ...todos];
+      e.target.value = '';
+      render();
+    };
+    $todos.onclick = ({ target }) => {
+      if (target.matches('.todos > li > button')) {
+        todos = todos.filter(todo => todo.id !== parseInt(target.parentNode.id, 0));
+        render();
+      }
+      if (target.matches('.todos > li > span')) {
+        const $replace = document.createElement('input');
+        $replace.setAttribute('type', 'text');
+        $replace.setAttribute('value', '');
+        $replace.setAttribute('placeholder', 'enter to change!');
+        target.parentNode.replaceChild($replace, target);
+        $replace.focus();
+      }
+    };
+    /* $todos.onchange = e => {
+        if (!e.target.checked) e.target.nextElementSibling.style.textDecorationLine = 'none';
+        else e.target.nextElementSibling.style.textDecorationLine = 'line-through';
+      }; */
+    $todos.onchange = e => {
+      if (!e.target.matches('.todos > li > input[type="checkbox"]')) return;
+      todos = todos.map(todo => (todo.id === parseInt(e.target.parentNode.id, 0) ? ({ ...todo, completed: !todo.completed }) : todo));
+    };
+    $todos.onkeyup = e => {
+      if (e.keyCode !== 13 || !e.target.value.trim()) return;
+      todos = todos.map(todo => (todo.id === parseInt(e.target.parentNode.id, 0)
+        ? ({ ...todo, content: e.target.value }) : todo));
+      render();
+    };
+  </script>
 </body>
+
 </html>
