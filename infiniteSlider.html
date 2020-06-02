@@ -79,37 +79,43 @@
     const { length } = $itemList.children;
     $itemList.style.width = `${200 * length}px`;
 
-    let curIndex = 0;
-    $nextBtn.onclick = () => {
-      if (curIndex < $items.length - 1) {
-        $itemList.style.transition = '300ms';
-        $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex + 2))) + 'px, 0px, 0px)';
-        curIndex++;
-      } else {
-        setTimeout(() => {
-          $itemList.style.transform = 'translate3d(-200px, 0px, 0px)';
-          $itemList.style.transition = '0ms';
-        }, 300);
-        $itemList.style.transition = '300ms';
-        $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex + 2))) + 'px, 0px, 0px)';
-        curIndex = 0;
-      }
-    };
-    $prevBtn.onclick = () => {
-      if (curIndex > 0) {
-        $itemList.style.transition = '300ms';
-        $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex))) + 'px, 0px, 0px)';
-        curIndex--;
-      } else {
-        setTimeout(() => {
-          $itemList.style.transform = `translate3d(-${200 * (length - 2)}px, 0px, 0px)`;
-          $itemList.style.transition = '0ms';
-        }, 300);
-        $itemList.style.transition = '300ms';
-        $itemList.style.transform = 'translate3d(-0px, 0px, 0px)';
-        curIndex = $items.length - 1;
-      }
-    };
+    const nepvFunction = (function () {
+      let curIndex = 0;
+      return {
+        nextItem() {
+          if (curIndex < $items.length - 1) {
+            $itemList.style.transition = '300ms';
+            $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex + 2))) + 'px, 0px, 0px)';
+            curIndex++;
+          } else {
+            setTimeout(() => {
+              $itemList.style.transform = 'translate3d(-200px, 0px, 0px)';
+              $itemList.style.transition = '0ms';
+            }, 300);
+            $itemList.style.transition = '300ms';
+            $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex + 2))) + 'px, 0px, 0px)';
+            curIndex = 0;
+          }
+        },
+        prevItem() {
+          if (curIndex > 0) {
+            $itemList.style.transition = '300ms';
+            $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex))) + 'px, 0px, 0px)';
+            curIndex--;
+          } else {
+            setTimeout(() => {
+              $itemList.style.transform = `translate3d(-${200 * (length - 2)}px, 0px, 0px)`;
+              $itemList.style.transition = '0ms';
+            }, 300);
+            $itemList.style.transition = '300ms';
+            $itemList.style.transform = 'translate3d(-0px, 0px, 0px)';
+            curIndex = $items.length - 1;
+          }
+        }
+      };
+    }());
+    $nextBtn.onclick = nepvFunction.nextItem;
+    $prevBtn.onclick = nepvFunction.prevItem;
   </script>
 </body>
 
