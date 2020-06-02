@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .item_view {
+      width: 200px;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .item_list {
+      list-style-type: none;
+      margin: 0;
+      padding-left: 0;
+      transform: translate3d(-200px, 0px, 0px);
+    }
+
+    .item {
+      float: left;
+      width: 200px;
+      height: 200px;
+    }
+
+    .item:nth-child(1) {
+      background-color: blue;
+    }
+
+    .item:nth-child(2) {
+      background-color: red;
+    }
+
+    .item:nth-child(3) {
+      background-color: orange;
+    }
+
+    .item:nth-child(4) {
+      background-color: yellow;
+    }
+
+    .item:nth-child(5) {
+      background-color: green;
+    }
+
+    .item:nth-child(6) {
+      background-color: blue;
+    }
+
+    .item:nth-child(7) {
+      background-color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="item_view">
+    <ul class="item_list">
+      <li class="item"></li>
+      <li class="item"></li>
+      <li class="item"></li>
+      <li class="item"></li>
+      <li class="item"></li>
+    </ul>
+  </div>
+  <button class="nextBtn">Next</button>
+  <button class="prevBtn">Prev</button>
+  <script>
+    const $nextBtn = document.querySelector('.nextBtn');
+    const $prevBtn = document.querySelector('.prevBtn');
+    const $itemList = document.querySelector('.item_list');
+    const $items = [...document.querySelectorAll('.item')];
+    const $firstChild = $itemList.firstElementChild;
+    const $lastChild = $itemList.lastElementChild;
+    $itemList.insertBefore($lastChild.cloneNode(true), $firstChild);
+    $itemList.appendChild($firstChild.cloneNode(true));
+    const { length } = $itemList.children;
+    $itemList.style.width = `${200 * length}px`;
+
+    let curIndex = 0;
+    $nextBtn.onclick = () => {
+      if (curIndex < $items.length - 1) {
+        $itemList.style.transition = '300ms';
+        $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex + 2))) + 'px, 0px, 0px)';
+        curIndex++;
+      } else {
+        setTimeout(() => {
+          $itemList.style.transform = 'translate3d(-200px, 0px, 0px)';
+          $itemList.style.transition = '0ms';
+        }, 300);
+        $itemList.style.transition = '300ms';
+        $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex + 2))) + 'px, 0px, 0px)';
+        curIndex = 0;
+      }
+    };
+    $prevBtn.onclick = () => {
+      if (curIndex > 0) {
+        $itemList.style.transition = '300ms';
+        $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex))) + 'px, 0px, 0px)';
+        curIndex--;
+      } else {
+        setTimeout(() => {
+          $itemList.style.transform = `translate3d(-${200 * (length - 2)}px, 0px, 0px)`;
+          $itemList.style.transition = '0ms';
+        }, 300);
+        $itemList.style.transition = '300ms';
+        $itemList.style.transform = 'translate3d(-0px, 0px, 0px)';
+        curIndex = $items.length - 1;
+      }
+    };
+  </script>
+</body>
+
+</html>
