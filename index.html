@@ -52,24 +52,30 @@
       todos.sort((a, b) => b.id - a.id);
       render();
     };
-
-
-
-    
-    $todoInput.onkeyup = e => {
-      if (e.keyCode !== 13 || !$todoInput.value.trim()) return;
-      const insertTodo = {};
-      insertTodo.id = Math.max(...todos.map(todo => todo.id)) + 1;
-      insertTodo.content = $todoInput.value;
-      insertTodo.completed = false;
-      todos = [insertTodo, ...todos];
-      e.target.value = '';
+    const generateId = () => (todos.length ? Math.max(...todos.map(todo => todo.id)) + 1 : 1);
+    const addTodo = content => {
+      todos = [{ id: generateId(), content, completed: false }, ...todos];
       render();
+    };
+    const removeTodo = id => {
+      todos = todos.filter(todo => todo.id !== +id);
+      render();
+    };
+    const toggleComp = id => {
+      todos = todos.map(todo => (todo.id === +id ? { ...todo, completed: !todo.completed } : todo));
+      render();
+    };
+
+    $todoInput.onkeyup = e => {
+      if (e.keyCode !== 13) return;
+      e.target.value = e.target.value.trim();
+      if (!$todoInput.value) return;
+      addTodo(e.target.value);
+      $todoInput.value = '';
     };
     $todos.onclick = ({ target }) => {
       if (target.matches('.todos > li > button')) {
-        todos = todos.filter(todo => todo.id !== parseInt(target.parentNode.id, 0));
-        render();
+        removeTodo(target.parentNode.id);
       }
       if (target.matches('.todos > li > span')) {
         const $replace = document.createElement('input');
@@ -84,9 +90,11 @@
         if (!e.target.checked) e.target.nextElementSibling.style.textDecorationLine = 'none';
         else e.target.nextElementSibling.style.textDecorationLine = 'line-through';
       }; */
+
+    
     $todos.onchange = e => {
       if (!e.target.matches('.todos > li > input[type="checkbox"]')) return;
-      todos = todos.map(todo => (todo.id === parseInt(e.target.parentNode.id, 0) ? ({ ...todo, completed: !todo.completed }) : todo));
+      toggleComp(e.target.parentNode.id);
     };
     $todos.onkeyup = e => {
       if (e.keyCode !== 13 || !e.target.value.trim()) return;
