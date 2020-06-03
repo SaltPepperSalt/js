@@ -7,7 +7,7 @@
   <title>Document</title>
   <style>
     .item_view {
-      width: 200px;
+      width: 400px;
       height: 200px;
       overflow: hidden;
     }
@@ -21,11 +21,12 @@
 
     .item {
       float: left;
-      width: 200px;
+      width: 400px;
       height: 200px;
     }
 
     .item:nth-child(1) {
+      width: 400px;
       background-color: blue;
     }
 
@@ -50,6 +51,7 @@
     }
 
     .item:nth-child(7) {
+      width: 400px;
       background-color: red;
     }
   </style>
@@ -77,7 +79,7 @@
     $itemList.insertBefore($lastChild.cloneNode(true), $firstChild);
     $itemList.appendChild($firstChild.cloneNode(true));
     const { length } = $itemList.children;
-    $itemList.style.width = `${200 * length}px`;
+    $itemList.style.width = `${400 * length}px`;
 
     const nepvFunction = (function () {
       let curIndex = 0;
@@ -85,26 +87,26 @@
         nextItem() {
           if (curIndex < $items.length - 1) {
             $itemList.style.transition = '300ms';
-            $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex + 2))) + 'px, 0px, 0px)';
+            $itemList.style.transform = 'translate3d(-' + (400 * (1 * (curIndex + 2))) + 'px, 0px, 0px)';
             curIndex++;
           } else {
             setTimeout(() => {
-              $itemList.style.transform = 'translate3d(-200px, 0px, 0px)';
+              $itemList.style.transform = 'translate3d(-400px, 0px, 0px)';
               $itemList.style.transition = '0ms';
             }, 300);
             $itemList.style.transition = '300ms';
-            $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex + 2))) + 'px, 0px, 0px)';
+            $itemList.style.transform = 'translate3d(-' + (400 * (1 * (curIndex + 2))) + 'px, 0px, 0px)';
             curIndex = 0;
           }
         },
         prevItem() {
           if (curIndex > 0) {
             $itemList.style.transition = '300ms';
-            $itemList.style.transform = 'translate3d(-' + (200 * (1 * (curIndex))) + 'px, 0px, 0px)';
+            $itemList.style.transform = 'translate3d(-' + (400 * (1 * (curIndex))) + 'px, 0px, 0px)';
             curIndex--;
           } else {
             setTimeout(() => {
-              $itemList.style.transform = `translate3d(-${200 * (length - 2)}px, 0px, 0px)`;
+              $itemList.style.transform = `translate3d(-${400 * (length - 2)}px, 0px, 0px)`;
               $itemList.style.transition = '0ms';
             }, 300);
             $itemList.style.transition = '300ms';
@@ -116,6 +118,9 @@
     }());
     $nextBtn.onclick = nepvFunction.nextItem;
     $prevBtn.onclick = nepvFunction.prevItem;
+    setInterval(() => {
+      nepvFunction.nextItem();
+    }, 2400);
   </script>
 </body>
 

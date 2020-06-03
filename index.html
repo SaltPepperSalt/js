@@ -31,23 +31,31 @@
     const $todoInput = document.querySelector('.todo-input');
     const $todos = document.querySelector('.todos');
 
-    let todos = [
-      { id: 3, content: 'JavaScript', completed: false },
-      { id: 2, content: 'CSS', completed: true },
-      { id: 1, content: 'HTML', completed: false }
-    ];
+    let todos = [];
 
-    function render() {
-      $todos.textContent = '';
+    const render = () => {
+      let html = '';
       // eslint-disable-next-line no-return-assign
-      todos.forEach(todo => $todos.innerHTML += `<li id=${todo.id}>
+      todos.forEach(todo => html += `<li id=${todo.id}>
         <input type="checkbox" ${todo.completed ? ' checked' : ''}>
         <span>${todo.content}</span>
         <button>X</button>  
       </li>`);
-    }
+      $todos.innerHTML = html;
+    };
+    window.onload = () => {
+      todos = [
+        { id: 1, content: 'HTML', completed: false },
+        { id: 2, content: 'CSS', completed: true },
+        { id: 3, content: 'JavaScript', completed: false }
+      ];
+      todos.sort((a, b) => b.id - a.id);
+      render();
+    };
+
+
+
     
-    render();
     $todoInput.onkeyup = e => {
       if (e.keyCode !== 13 || !$todoInput.value.trim()) return;
       const insertTodo = {};

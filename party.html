@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    h1 {
+      font-size: 80px;
+    }
+  </style>
+</head>
+<body>
+  <h1></h1>
+  <script>
+    const $time = document.querySelector('h1');
+    const $party = document.querySelector('body');
+    (function printNow() {
+      const today = new Date();
+    
+      const dayNames = ['(일요일)', '(월요일)', '(화요일)', '(수요일)', '(목요일)', '(금요일)', '(토요일)'];
+      // getDay: 해당 요일(0 ~ 6)를 나타내는 정수를 반환한다.
+      const day = dayNames[today.getDay()];
+    
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+      const date = today.getDate();
+      let hour = today.getHours();
+      let minute = today.getMinutes();
+      let second = today.getSeconds();
+      let msecond = Math.floor(today.getMilliseconds() / 10);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+    
+      // 12시간제로 변경
+      hour %= 12;
+      hour = hour || 12; // 0 => 12
+    
+      // 10미만인 분과 초를 2자리로 변경
+      minute = minute < 10 ? '0' + minute : minute;
+      second = second < 10 ? '0' + second : second;
+      msecond = msecond < 10 ? '0' + msecond : msecond;
+
+    
+      const now = `${year}년 ${month}월 ${date}일 ${day} ${hour}:${minute}:${second}:${msecond} ${ampm}`;
+    
+      $time.innerHTML = now;
+      setTimeout(printNow);
+    }());
+
+
+    setInterval(() => { $party.style.backgroundColor = '#' + Math.floor(Math.random() * 16777215).toString(16); }, 1000);
+  </script>
+</body>
+</html>
